@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USkeletalMeshComponent;
+class AS_BaseWeapon;
 
 UCLASS()
 class THESHOOTER_API AS_PlayerCharacter : public AS_BaseCharacter
@@ -27,6 +28,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Interaction")
 	AActor* InteractActor;
 
+	/** Current weapon that player is holding */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
+	AS_BaseWeapon* WeaponReference;
+
+	/** Gamepad turn rate */
+	float BaseTurnRate;
+
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -42,6 +50,12 @@ protected:
 
 	void MoveRight(float Value);
 
+	void TurnAtRate(float Rate);
+
+	void LookUpAtRate(float Rate);
+	
 	void Interact();
+
+	void Fire();
 
 };

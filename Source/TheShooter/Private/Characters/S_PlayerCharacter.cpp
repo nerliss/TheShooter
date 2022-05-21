@@ -6,6 +6,7 @@
 #include "DrawDebugHelpers.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Weapons/S_BaseWeapon.h"
 
 AS_PlayerCharacter::AS_PlayerCharacter()
 {
@@ -24,6 +25,8 @@ AS_PlayerCharacter::AS_PlayerCharacter()
 	FirstPersonMeshComp->CastShadow = false;
 	FirstPersonMeshComp->bOnlyOwnerSee = true;
 
+	// Gamepad turn rate
+	BaseTurnRate = 45.f;
 }
 
 void AS_PlayerCharacter::BeginPlay()
@@ -52,13 +55,17 @@ void AS_PlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 		PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AS_BaseCharacter::StartCrouching);
 		PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AS_BaseCharacter::StopCrouching);
 		PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AS_PlayerCharacter::Interact);
+		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AS_PlayerCharacter::Fire);
+		
 
 		// Setup axis bindings
 		PlayerInputComponent->BindAxis("MoveForward", this, &AS_PlayerCharacter::MoveForward);
 		PlayerInputComponent->BindAxis("MoveRight", this, &AS_PlayerCharacter::MoveRight);
 
 		PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+		PlayerInputComponent->BindAxis("TurnRate", this, &AS_PlayerCharacter::TurnAtRate);
 		PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+		PlayerInputComponent->BindAxis("LookUpRate", this, &AS_PlayerCharacter::LookUpAtRate);
 	}
 }
 
@@ -78,11 +85,35 @@ void AS_PlayerCharacter::MoveRight(float Value)
 	}
 }
 
+void AS_PlayerCharacter::TurnAtRate(float Rate)
+{
+	if (Controller && Rate != 0.f)
+	{
+		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	}
+}
+
+void AS_PlayerCharacter::LookUpAtRate(float Rate)
+{
+	if (Controller && Rate != 0.f)
+	{
+		AddControllerPitchInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	}
+}
+
 void AS_PlayerCharacter::Interact()
 {
 	if (InteractActor && InteractActor->GetClass()->ImplementsInterface(US_InteractInterface::StaticClass()))
 	{
 		IS_InteractInterface::Execute_Interact(InteractActor, this);
+	}
+}
+
+void AS_PlayerCharacter::Fire()
+{
+	if (WeaponReference)
+	{
+		WeaponReference->Fire();
 	}
 }
 

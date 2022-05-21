@@ -14,4 +14,10 @@ class THESHOOTER_API AS_GenericGun : public AS_BaseWeapon
 {
 	GENERATED_BODY()
 	
+public:
+
+	AS_GenericGun();
+
+	virtual void Fire() override;
+
 };
