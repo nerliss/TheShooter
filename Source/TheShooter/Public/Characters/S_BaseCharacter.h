@@ -29,6 +29,10 @@ public:
 
 	void StopSprinting();
 
+	void StartCrouching();
+
+	void StopCrouching();
+
 protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Health")

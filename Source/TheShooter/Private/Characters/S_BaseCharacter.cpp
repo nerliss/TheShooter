@@ -14,6 +14,7 @@ AS_BaseCharacter::AS_BaseCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0);
 	GetCharacterMovement()->MaxWalkSpeed = 450.f;
 	GetCharacterMovement()->MaxWalkSpeedCrouched = 200.f;
+	GetCharacterMovement()->bCanWalkOffLedgesWhenCrouching = true;
 	GetCharacterMovement()->AirControl = 0.1f;
 
 	// Health Component
@@ -57,5 +58,21 @@ void AS_BaseCharacter::StartSprinting()
 void AS_BaseCharacter::StopSprinting()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 450.f;
+}
+
+void AS_BaseCharacter::StartCrouching()
+{
+	if (CanCrouch())
+	{
+		ACharacter::Crouch(false);
+	}
+}
+
+void AS_BaseCharacter::StopCrouching()
+{
+	if (GetCharacterMovement()->IsCrouching())
+	{
+		ACharacter::UnCrouch(false);
+	}
 }
 

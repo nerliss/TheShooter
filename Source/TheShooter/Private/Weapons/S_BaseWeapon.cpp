@@ -2,6 +2,7 @@
 
 
 #include "Weapons/S_BaseWeapon.h"
+#include "Utility/Utility.h"
 
 AS_BaseWeapon::AS_BaseWeapon()
 {
@@ -12,7 +13,7 @@ AS_BaseWeapon::AS_BaseWeapon()
 void AS_BaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 void AS_BaseWeapon::Tick(float DeltaTime)
@@ -21,3 +22,7 @@ void AS_BaseWeapon::Tick(float DeltaTime)
 
 }
 
+void AS_BaseWeapon::Interact_Implementation(AActor* InteractActor)
+{
+	DEBUGMESSAGE(3.f, "Interaction successful");
+}
