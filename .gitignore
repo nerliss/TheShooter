@@ -75,3 +75,7 @@ DerivedDataCache/*
 
 # Third-party content
 Content/StarterContent/*
+Content/MilitaryWeapSilver/*
+Content/FPS_Assault_Pack/*
+Content/FPS_Weapon_Bundle/*
+Content/ThirdPersonTemplate/*

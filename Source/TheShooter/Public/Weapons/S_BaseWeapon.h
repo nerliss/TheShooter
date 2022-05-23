@@ -28,6 +28,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	virtual void Fire();
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	virtual void Reload();
+
 protected:
 
 	virtual void BeginPlay() override;

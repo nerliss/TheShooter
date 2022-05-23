@@ -56,12 +56,11 @@ void AS_PlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 		PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AS_BaseCharacter::StopCrouching);
 		PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AS_PlayerCharacter::Interact);
 		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AS_PlayerCharacter::Fire);
-		
+		PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AS_PlayerCharacter::Reload);
 
 		// Setup axis bindings
 		PlayerInputComponent->BindAxis("MoveForward", this, &AS_PlayerCharacter::MoveForward);
 		PlayerInputComponent->BindAxis("MoveRight", this, &AS_PlayerCharacter::MoveRight);
-
 		PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 		PlayerInputComponent->BindAxis("TurnRate", this, &AS_PlayerCharacter::TurnAtRate);
 		PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
@@ -114,6 +113,14 @@ void AS_PlayerCharacter::Fire()
 	if (WeaponReference)
 	{
 		WeaponReference->Fire();
+	}
+}
+
+void AS_PlayerCharacter::Reload()
+{
+	if (WeaponReference)
+	{
+		WeaponReference->Reload();
 	}
 }
 

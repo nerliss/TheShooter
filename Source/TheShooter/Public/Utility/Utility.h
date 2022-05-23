@@ -4,11 +4,16 @@
 
 #include "CoreMinimal.h"
 
-// Print string on screen macro
-#define DEBUGMESSAGE(x, y, ...) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, x, FColor::Red, FString::Printf(TEXT(y), __VA_ARGS__));}
+/**
+* Print debug message to screen
+* @param x - message visibility duration
+* @param y - message text color
+* @param z - message text itself
+*/
+#define DEBUGMESSAGE(x, y, z,...) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, x, y, FString::Printf(TEXT(z), __VA_ARGS__));}
 
 /**
- * Contains differet useful macros, etc.
+ * Contains different useful macros, etc.
  */
 class THESHOOTER_API Utility
 {

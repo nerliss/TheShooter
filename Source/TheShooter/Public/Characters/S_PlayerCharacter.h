@@ -58,4 +58,6 @@ protected:
 
 	void Fire();
 
+	void Reload();
+
 };
