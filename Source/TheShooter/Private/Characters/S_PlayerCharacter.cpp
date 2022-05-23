@@ -57,6 +57,7 @@ void AS_PlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 		PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AS_PlayerCharacter::Interact);
 		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AS_PlayerCharacter::Fire);
 		PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AS_PlayerCharacter::Reload);
+		PlayerInputComponent->BindAction("DropWeapon", IE_Pressed, this, &AS_PlayerCharacter::DropWeapon);
 
 		// Setup axis bindings
 		PlayerInputComponent->BindAxis("MoveForward", this, &AS_PlayerCharacter::MoveForward);
@@ -121,6 +122,14 @@ void AS_PlayerCharacter::Reload()
 	if (WeaponReference)
 	{
 		WeaponReference->Reload();
+	}
+}
+
+void AS_PlayerCharacter::DropWeapon()
+{
+	if (WeaponReference)
+	{
+		WeaponReference->DropWeapon(true);
 	}
 }
 

@@ -15,6 +15,8 @@ AS_GenericGun::AS_GenericGun()
 
 void AS_GenericGun::Fire()
 {
+	Super::Fire();
+
 	AS_PlayerCharacter* MyOwner = Cast<AS_PlayerCharacter>(GetAttachParentActor());
 
 	if (MyOwner && ProjectileClass)

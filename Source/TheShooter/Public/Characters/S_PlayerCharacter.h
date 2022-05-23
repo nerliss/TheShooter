@@ -60,4 +60,6 @@ protected:
 
 	void Reload();
 
+	void DropWeapon();
+
 };
