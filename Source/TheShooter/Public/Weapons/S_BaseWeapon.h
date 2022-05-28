@@ -21,17 +21,26 @@ public:
 
 	AS_BaseWeapon();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponMesh")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon|Ammo")
+	int32 CurrentAmmo;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon|Ammo")
+	int32 MaxAmmo;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon|Ammo")
+	int32 ClipAmmo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Mesh")
 	USkeletalMeshComponent* WeaponSkeletalMesh;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Effects")
 	UParticleSystem* ShotVFX;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Effects")
 	USoundBase* ShotSFX;
 
 	/** Reference to a player character. Should be set upon picking up a weapon once this project is configured for multiplayer */
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "PlayerReference")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon|PlayerReference")
 	AS_PlayerCharacter* PlayerRef;
 
 	virtual void Tick(float DeltaTime) override;

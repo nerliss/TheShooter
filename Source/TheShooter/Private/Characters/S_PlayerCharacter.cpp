@@ -7,10 +7,14 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Weapons/S_BaseWeapon.h"
+#include "Net/UnrealNetwork.h"
 
 AS_PlayerCharacter::AS_PlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	// Set up derived mesh comp (used for Third Person Mesh)
+	GetMesh()->bOwnerNoSee = true;
 
 	// Set up camera component
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));

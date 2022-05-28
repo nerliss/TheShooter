@@ -6,6 +6,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GamePlayStatics.h"
 #include "Characters/S_PlayerCharacter.h"
+#include "PlayerControllers/S_PlayerControllerMain.h"
+#include "Net/UnrealNetwork.h"
 
 AS_BaseWeapon::AS_BaseWeapon()
 {
@@ -17,12 +19,17 @@ AS_BaseWeapon::AS_BaseWeapon()
 	WeaponSkeletalMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	WeaponSkeletalMesh->SetCollisionProfileName("BlockAll");
 
+	MaxAmmo = 60;
+	ClipAmmo = 20;
+
 	bCanBeDropped = true;
 }
 
 void AS_BaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CurrentAmmo = ClipAmmo;
 
 	// Set player reference
 	PlayerRef = Cast<AS_PlayerCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)); // TODO: Adapt for multiplayer

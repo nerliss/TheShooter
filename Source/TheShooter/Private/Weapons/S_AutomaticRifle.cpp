@@ -6,7 +6,7 @@
 
 AS_AutomaticRifle::AS_AutomaticRifle()
 {
-
+	SetReplicates(true);
 }
 
 void AS_AutomaticRifle::Fire()

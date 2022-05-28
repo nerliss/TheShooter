@@ -10,7 +10,7 @@
 AS_GenericGun::AS_GenericGun()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
+	SetReplicates(true);
 }
 
 void AS_GenericGun::Fire()
@@ -29,8 +29,6 @@ void AS_GenericGun::Fire()
 		ASP.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 		GetWorld()->SpawnActor<AActor>(ProjectileClass, MuzzleLocation, SpawnRotation, ASP);
-
-		DEBUGMESSAGE(3.f, FColor::Green, "Projectile spawned");
 	}
 	else
 	{
