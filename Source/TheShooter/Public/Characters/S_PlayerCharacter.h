@@ -10,6 +10,24 @@ class UCameraComponent;
 class USkeletalMeshComponent;
 class AS_BaseWeapon;
 
+/**
+* Character armed status:
+* @param Disarmed - player is not carrying any weapon in hands right now
+* @param Melee - player is carrying a knife or something melee right now
+* @param Primary Weapon - player is carrying a rifle or something similar right now
+* @param Secondary Weapon - player is carrying a pistol or something similar right now
+* @param Special - player is carrying a bomb or something similar right now
+*/
+UENUM(Blueprintable)
+enum ECharacterArmedStatus
+{
+	EArmedStatus_Disarmed			UMETA(DisplayName = "Disarmed"),
+	EArmedStatus_Melee				UMETA(DisplayName = "Melee"),
+	EArmedStatus_PrimaryWeapon		UMETA(DisplayName = "Primary Weapon"),
+	EArmedStatus_SecondaryWeapon	UMETA(DisplayName = "Secondary Weapon"),
+	EArmedStatus_Special			UMETA(DisplayName = "Special")
+};
+
 UCLASS()
 class THESHOOTER_API AS_PlayerCharacter : public AS_BaseCharacter
 {
