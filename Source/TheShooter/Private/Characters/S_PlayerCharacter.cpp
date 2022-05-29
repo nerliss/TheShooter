@@ -126,10 +126,27 @@ void AS_PlayerCharacter::LookUpAtRate(float Rate)
 
 void AS_PlayerCharacter::Interact()
 {
-	if (InteractActor && InteractActor->GetClass()->ImplementsInterface(US_InteractInterface::StaticClass()))
+	if (GetLocalRole() == ROLE_Authority)
 	{
-		IS_InteractInterface::Execute_Interact(InteractActor, this);
+		if (InteractActor && InteractActor->GetClass()->ImplementsInterface(US_InteractInterface::StaticClass()))
+		{
+			IS_InteractInterface::Execute_Interact(InteractActor, this);
+		}
 	}
+	else
+	{
+		ServerInteract();
+	}
+}
+
+void AS_PlayerCharacter::ServerInteract_Implementation()
+{
+	Interact();
+}
+
+bool AS_PlayerCharacter::ServerInteract_Validate()
+{
+	return true;
 }
 
 void AS_PlayerCharacter::Fire()

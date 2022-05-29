@@ -96,6 +96,9 @@ protected:
 	
 	void Interact();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerInteract();
+
 	void Fire();
 
 	void Reload();

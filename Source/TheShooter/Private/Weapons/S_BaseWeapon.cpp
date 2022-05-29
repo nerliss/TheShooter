@@ -43,11 +43,6 @@ void AS_BaseWeapon::Tick(float DeltaTime)
 
 void AS_BaseWeapon::Fire()
 {
-	if (GetLocalRole() < ROLE_Authority)
-	{
-		ServerFire();
-	}
-
 	// Spawn effects at muzzle location
 	if (ShotSFX)
 	{
