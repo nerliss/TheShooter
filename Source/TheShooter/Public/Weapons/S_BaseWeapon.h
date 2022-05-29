@@ -47,8 +47,14 @@ public:
 
 	void Interact_Implementation(AActor* InteractActor) override;
 
+	UFUNCTION(Server, Reliable, WithValidation, Category = "Weapon|Server")
+	void ServerInteract_Implementation(AActor* InteractActor);
+
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	virtual void Fire();
+
+	UFUNCTION(Server, Reliable, WithValidation, Category = "Weapon|Server")
+	virtual void ServerFire();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	virtual void Reload();

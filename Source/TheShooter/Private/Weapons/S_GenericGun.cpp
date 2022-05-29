@@ -6,6 +6,7 @@
 #include "Weapons/Projectiles/S_BaseProjectile.h"
 #include "Characters/S_PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Net/UnrealNetwork.h"
 
 AS_GenericGun::AS_GenericGun()
 {
@@ -16,6 +17,11 @@ AS_GenericGun::AS_GenericGun()
 void AS_GenericGun::Fire()
 {
 	Super::Fire();
+
+	if (GetLocalRole() < ROLE_Authority)
+	{
+		ServerFire();
+	}
 
 	AS_PlayerCharacter* MyOwner = Cast<AS_PlayerCharacter>(GetAttachParentActor());
 
@@ -35,3 +41,4 @@ void AS_GenericGun::Fire()
 		DEBUGMESSAGE(3.f, FColor::Red, "Projectile NOT spawned");
 	}
 }
+

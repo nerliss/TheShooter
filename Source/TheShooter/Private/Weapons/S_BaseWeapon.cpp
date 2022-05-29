@@ -43,6 +43,11 @@ void AS_BaseWeapon::Tick(float DeltaTime)
 
 void AS_BaseWeapon::Fire()
 {
+	if (GetLocalRole() < ROLE_Authority)
+	{
+		ServerFire();
+	}
+
 	// Spawn effects at muzzle location
 	if (ShotSFX)
 	{
@@ -53,6 +58,16 @@ void AS_BaseWeapon::Fire()
 	{
 		UGameplayStatics::SpawnEmitterAttached(ShotVFX, WeaponSkeletalMesh, "MuzzleSocket");
 	}
+}
+
+void AS_BaseWeapon::ServerFire_Implementation()
+{
+	Fire();
+}
+
+bool AS_BaseWeapon::ServerFire_Validate()
+{
+	return true;
 }
 
 void AS_BaseWeapon::Reload()
@@ -74,12 +89,18 @@ void AS_BaseWeapon::DropWeapon(bool bDeleteWeaponReference)
 		if (bDeleteWeaponReference)
 		{
 			PlayerRef->WeaponReference = nullptr;
+			PlayerRef->ArmedStatus = EArmedStatus_Disarmed;
 		}
 	}
 }
 
 void AS_BaseWeapon::Interact_Implementation(AActor* InteractActor)
 {
+	if (GetLocalRole() < ROLE_Authority)
+	{
+		ServerInteract_Implementation(InteractActor);
+	}
+
 	if (PlayerRef)
 	{
 		AS_BaseWeapon* PlayerWeaponRef = PlayerRef->WeaponReference;
@@ -94,6 +115,7 @@ void AS_BaseWeapon::Interact_Implementation(AActor* InteractActor)
 		{
 			// Set reference to this weapon in player's class
 			PlayerRef->WeaponReference = this;
+			PlayerRef->ArmedStatus = EArmedStatus_PrimaryWeapon;
 
 			// Attach this weapon to FirstPersonArms
 			AttachToComponent(PlayerRef->FirstPersonMeshComp, AttachParams, "GripSocket");
@@ -130,6 +152,8 @@ void AS_BaseWeapon::Interact_Implementation(AActor* InteractActor)
 
 				// Change weapon reference in player class
 				PlayerRef->WeaponReference = Cast<AS_BaseWeapon>(NewWeapon);
+				// Should be overriden in other weapon classes that are not of Primary Weapon type
+				PlayerRef->ArmedStatus = EArmedStatus_PrimaryWeapon;
 
 				// Attach new weapon to FirstPersonArms
 				NewWeapon->AttachToComponent(PlayerRef->FirstPersonMeshComp, AttachParams, "GripSocket");
@@ -149,5 +173,14 @@ void AS_BaseWeapon::Interact_Implementation(AActor* InteractActor)
 			}
 		}
 	}
+}
 
+void AS_BaseWeapon::ServerInteract_Implementation_Implementation(AActor* InteractActor)
+{
+	Interact_Implementation(InteractActor);
+}
+
+bool AS_BaseWeapon::ServerInteract_Implementation_Validate(AActor* InteractActor)
+{
+	return true;
 }

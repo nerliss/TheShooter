@@ -46,8 +46,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Interaction")
 	AActor* InteractActor;
 
+	/** Should be changed every time a player changes active weapon */
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Weapons")
+	TEnumAsByte<ECharacterArmedStatus> ArmedStatus;
+
 	/** Current weapon that player is holding */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Weapons")
 	AS_BaseWeapon* WeaponReference;
 
 	/** Gamepad turn rate */

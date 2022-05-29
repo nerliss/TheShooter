@@ -13,6 +13,9 @@ AS_PlayerCharacter::AS_PlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Set replicaton status to true
+	SetReplicates(true);
+
 	// Set up derived mesh comp (used for Third Person Mesh)
 	GetMesh()->bOwnerNoSee = true;
 
@@ -31,6 +34,9 @@ AS_PlayerCharacter::AS_PlayerCharacter()
 
 	// Gamepad turn rate
 	BaseTurnRate = 45.f;
+
+	// Default armed status
+	ArmedStatus = ECharacterArmedStatus::EArmedStatus_Disarmed;
 }
 
 void AS_PlayerCharacter::BeginPlay()
@@ -166,3 +172,10 @@ void AS_PlayerCharacter::InteractionLinetrace(float InLength, bool bDrawDebugLin
 	}
 }
 
+void AS_PlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AS_PlayerCharacter, ArmedStatus);
+	DOREPLIFETIME(AS_PlayerCharacter, WeaponReference);
+}
