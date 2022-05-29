@@ -45,10 +45,10 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	void Interact_Implementation(AActor* InteractActor) override;
+	void Interact_Implementation(AActor* Interactor) override;
 
-	UFUNCTION(Server, Reliable, WithValidation, Category = "Weapon|Server")
-	void ServerInteract_Implementation(AActor* InteractActor);
+// 	UFUNCTION(Server, Reliable, WithValidation, Category = "Weapon|Server")
+// 	void ServerInteract_Implementation(AActor* Interactor);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	virtual void Fire();

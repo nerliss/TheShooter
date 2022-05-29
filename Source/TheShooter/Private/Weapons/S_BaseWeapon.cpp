@@ -94,12 +94,10 @@ void AS_BaseWeapon::DropWeapon(bool bDeleteWeaponReference)
 	}
 }
 
-void AS_BaseWeapon::Interact_Implementation(AActor* InteractActor)
+void AS_BaseWeapon::Interact_Implementation(AActor* Interactor)
 {
-	if (GetLocalRole() < ROLE_Authority)
-	{
-		ServerInteract_Implementation(InteractActor);
-	}
+	// Set reference to a player that interacted with
+	PlayerRef = Cast<AS_PlayerCharacter>(Interactor);
 
 	if (PlayerRef)
 	{
@@ -173,14 +171,4 @@ void AS_BaseWeapon::Interact_Implementation(AActor* InteractActor)
 			}
 		}
 	}
-}
-
-void AS_BaseWeapon::ServerInteract_Implementation_Implementation(AActor* InteractActor)
-{
-	Interact_Implementation(InteractActor);
-}
-
-bool AS_BaseWeapon::ServerInteract_Implementation_Validate(AActor* InteractActor)
-{
-	return true;
 }

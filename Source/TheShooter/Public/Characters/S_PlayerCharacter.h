@@ -43,7 +43,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FPMesh")
 	USkeletalMeshComponent* FirstPersonMeshComp;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Interaction")
+	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "Interaction")
 	AActor* InteractActor;
 
 	/** Should be changed every time a player changes active weapon */
@@ -57,12 +57,30 @@ public:
 	/** Gamepad turn rate */
 	float BaseTurnRate;
 
+	UPROPERTY(Replicated, VisibleDefaultsOnly, BlueprintReadOnly, Category = "Linetrace")
+	FVector LinetraceStartLocation;
+
+	UPROPERTY(Replicated, VisibleDefaultsOnly, BlueprintReadOnly, Category = "Linetrace")
+	FVector LinetraceEndLocation;
+
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	UFUNCTION(BlueprintCallable, Category = "Interaction")
 	void InteractionLinetrace(float InLength, bool bDrawDebugLine, AActor*& OutActor);
+
+	UFUNCTION(Server, Reliable)
+	void ServerInteractionLinetrace(float InLength, bool bDrawDebugLine);
+
+	/** Is required for proper interaction linetrace 
+	* (allows clients to actually return an object they are looking at, rather than an object in front of their eyes) 
+	*/
+	UFUNCTION()
+	void UpdateCameraRotation(FRotator NewRotation);
+
+	UFUNCTION(NetMulticast, Unreliable, BlueprintCallable, Category = "Camera")
+	void NetMulticastUpdateCameraRotation(FRotator NewRotation);
 
 protected:
 

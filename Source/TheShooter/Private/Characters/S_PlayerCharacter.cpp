@@ -48,7 +48,20 @@ void AS_PlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	InteractionLinetrace(600.f, false, InteractActor);
+	if (GetLocalRole() == ROLE_Authority)
+	{
+		FRotator PawnRotation = APawn::GetControlRotation();
+		NetMulticastUpdateCameraRotation(PawnRotation);
+	}
+
+	if (GetLocalRole() < ROLE_Authority)
+	{
+		ServerInteractionLinetrace(600.f, true);
+	}
+	else
+	{
+		InteractionLinetrace(600.f, true, InteractActor);
+	}
 }
 
 void AS_PlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -145,21 +158,21 @@ void AS_PlayerCharacter::DropWeapon()
 
 void AS_PlayerCharacter::InteractionLinetrace(float InLength, bool bDrawDebugLine, AActor*& OutActor)
 {
-	FVector StartLocation = CameraComp->GetComponentLocation();
-	FVector EndLocation = StartLocation + (CameraComp->GetForwardVector() * InLength); 
+	LinetraceStartLocation = CameraComp->GetComponentLocation();
+	LinetraceEndLocation = LinetraceStartLocation + (CameraComp->GetForwardVector() * InLength);
 
 	FHitResult HitResult;
 
 	FCollisionQueryParams CQP;
 	CQP.AddIgnoredActor(this);
 
-	bool bHitResult = GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_WorldDynamic, CQP);
+	bool bHitResult = GetWorld()->LineTraceSingleByChannel(HitResult, LinetraceStartLocation, LinetraceEndLocation, ECC_WorldDynamic, CQP);
 
 	if (bHitResult)
 	{
 		if (bDrawDebugLine)
 		{
-			DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, 5.f, 0, 2.f);
+			DrawDebugLine(GetWorld(), LinetraceStartLocation, LinetraceEndLocation, FColor::Red, false, 5.f, 0, 2.f);
 		}
 
 		OutActor = HitResult.GetActor();
@@ -172,10 +185,31 @@ void AS_PlayerCharacter::InteractionLinetrace(float InLength, bool bDrawDebugLin
 	}
 }
 
+void AS_PlayerCharacter::ServerInteractionLinetrace_Implementation(float InLength, bool bDrawDebugLine)
+{
+	InteractionLinetrace(InLength, bDrawDebugLine, InteractActor);
+}
+
+void AS_PlayerCharacter::UpdateCameraRotation(FRotator NewRotation)
+{
+	if (!APawn::IsLocallyControlled())
+	{
+		CameraComp->SetWorldRotation(NewRotation);
+	}
+}
+
+void AS_PlayerCharacter::NetMulticastUpdateCameraRotation_Implementation(FRotator NewRotation)
+{
+	UpdateCameraRotation(NewRotation);
+}
+
 void AS_PlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME(AS_PlayerCharacter, InteractActor);
+	DOREPLIFETIME(AS_PlayerCharacter, LinetraceStartLocation);
+	DOREPLIFETIME(AS_PlayerCharacter, LinetraceEndLocation);
 	DOREPLIFETIME(AS_PlayerCharacter, ArmedStatus);
 	DOREPLIFETIME(AS_PlayerCharacter, WeaponReference);
 }
