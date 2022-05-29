@@ -18,6 +18,7 @@ AS_BaseWeapon::AS_BaseWeapon()
 	WeaponSkeletalMesh->SetupAttachment(GetRootComponent());
 	WeaponSkeletalMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	WeaponSkeletalMesh->SetCollisionProfileName("BlockAll");
+	WeaponSkeletalMesh->SetIsReplicated(true);
 
 	MaxAmmo = 60;
 	ClipAmmo = 20;
@@ -89,6 +90,23 @@ void AS_BaseWeapon::DropWeapon(bool bDeleteWeaponReference)
 	}
 }
 
+void AS_BaseWeapon::UpdateMeshCollision(ECollisionEnabled::Type NewCollision)
+{
+	if (PlayerRef && PlayerRef->GetLocalRole() < ROLE_Authority)
+	{
+		ServerUpdateMeshCollision(NewCollision);
+	}
+	else
+	{
+		WeaponSkeletalMesh->SetCollisionEnabled(NewCollision);
+	}	
+}
+
+void AS_BaseWeapon::ServerUpdateMeshCollision_Implementation(ECollisionEnabled::Type NewCollision)
+{
+	UpdateMeshCollision(NewCollision);
+}
+
 void AS_BaseWeapon::Interact_Implementation(AActor* Interactor)
 {
 	// Set reference to a player that interacted with
@@ -114,7 +132,7 @@ void AS_BaseWeapon::Interact_Implementation(AActor* Interactor)
 			AttachToComponent(PlayerRef->FirstPersonMeshComp, AttachParams, "GripSocket");
 
 			// Disable collision for this weapon
-			WeaponSkeletalMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			PlayerRef->WeaponReference->UpdateMeshCollision(ECollisionEnabled::NoCollision);
 
 			// Call BP event
 			OnWeaponPickedUp();
@@ -141,11 +159,11 @@ void AS_BaseWeapon::Interact_Implementation(AActor* Interactor)
 				PlayerWeaponRef->SetActorTransform(NewWeaponTransform);
 
 				// Enable collision for it
-				PlayerWeaponRef->WeaponSkeletalMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+				PlayerWeaponRef->UpdateMeshCollision(ECollisionEnabled::QueryAndPhysics);
 
 				// Change weapon reference in player class
 				PlayerRef->WeaponReference = Cast<AS_BaseWeapon>(NewWeapon);
-				// Should be overriden in other weapon classes that are not of Primary Weapon type
+				// Should be overridden in other weapon classes that are not of Primary Weapon type
 				PlayerRef->ArmedStatus = EArmedStatus_PrimaryWeapon;
 
 				// Attach new weapon to FirstPersonArms
@@ -154,7 +172,7 @@ void AS_BaseWeapon::Interact_Implementation(AActor* Interactor)
 				// Since we reassign player's weapon reference we also need to rewrite player reference itself
 				// and then set weapon's collision to disabled
 				PlayerRef = Cast<AS_PlayerCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-				PlayerRef->WeaponReference->WeaponSkeletalMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+				PlayerRef->WeaponReference->UpdateMeshCollision(ECollisionEnabled::NoCollision);
 
 				// Call BP event
 				OnWeaponPickedUp();
@@ -166,4 +184,11 @@ void AS_BaseWeapon::Interact_Implementation(AActor* Interactor)
 			}
 		}
 	}
+}
+
+void AS_BaseWeapon::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AS_BaseWeapon, WeaponSkeletalMesh);
 }

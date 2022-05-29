@@ -48,20 +48,15 @@ void AS_PlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Update camera rotation
 	if (GetLocalRole() == ROLE_Authority)
 	{
 		FRotator PawnRotation = APawn::GetControlRotation();
 		NetMulticastUpdateCameraRotation(PawnRotation);
 	}
 
-	if (GetLocalRole() < ROLE_Authority)
-	{
-		ServerInteractionLinetrace(600.f, true);
-	}
-	else
-	{
-		InteractionLinetrace(600.f, true, InteractActor);
-	}
+	// Cast interaction linetrace 
+	InteractionLinetrace(600.f, false, InteractActor);
 }
 
 void AS_PlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -175,30 +170,37 @@ void AS_PlayerCharacter::DropWeapon()
 
 void AS_PlayerCharacter::InteractionLinetrace(float InLength, bool bDrawDebugLine, AActor*& OutActor)
 {
-	LinetraceStartLocation = CameraComp->GetComponentLocation();
-	LinetraceEndLocation = LinetraceStartLocation + (CameraComp->GetForwardVector() * InLength);
-
-	FHitResult HitResult;
-
-	FCollisionQueryParams CQP;
-	CQP.AddIgnoredActor(this);
-
-	bool bHitResult = GetWorld()->LineTraceSingleByChannel(HitResult, LinetraceStartLocation, LinetraceEndLocation, ECC_WorldDynamic, CQP);
-
-	if (bHitResult)
+	if (GetLocalRole() < ROLE_Authority)
 	{
-		if (bDrawDebugLine)
-		{
-			DrawDebugLine(GetWorld(), LinetraceStartLocation, LinetraceEndLocation, FColor::Red, false, 5.f, 0, 2.f);
-		}
-
-		OutActor = HitResult.GetActor();
-		InteractActor = OutActor;
+		ServerInteractionLinetrace(InLength, bDrawDebugLine);
 	}
 	else
 	{
-		OutActor = nullptr;
-		InteractActor = nullptr;
+		LinetraceStartLocation = CameraComp->GetComponentLocation();
+		LinetraceEndLocation = LinetraceStartLocation + (CameraComp->GetForwardVector() * InLength);
+
+		FHitResult HitResult;
+
+		FCollisionQueryParams CQP;
+		CQP.AddIgnoredActor(this);
+
+		bool bHitResult = GetWorld()->LineTraceSingleByChannel(HitResult, LinetraceStartLocation, LinetraceEndLocation, ECC_WorldDynamic, CQP);
+
+		if (bHitResult)
+		{
+			if (bDrawDebugLine)
+			{
+				DrawDebugLine(GetWorld(), LinetraceStartLocation, LinetraceEndLocation, FColor::Red, false, 5.f, 0, 2.f);
+			}
+
+			OutActor = HitResult.GetActor();
+			InteractActor = OutActor;
+		}
+		else
+		{
+			OutActor = nullptr;
+			InteractActor = nullptr;
+		}
 	}
 }
 

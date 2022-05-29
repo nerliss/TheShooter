@@ -30,7 +30,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon|Ammo")
 	int32 ClipAmmo;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Mesh")
+	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Mesh")
 	USkeletalMeshComponent* WeaponSkeletalMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Effects")
@@ -66,6 +66,11 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
 	void OnWeaponPickedUp();
+
+	void UpdateMeshCollision(ECollisionEnabled::Type NewCollision);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void ServerUpdateMeshCollision(ECollisionEnabled::Type NewCollision);
 
 protected:
 
