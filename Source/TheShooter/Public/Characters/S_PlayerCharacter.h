@@ -10,6 +10,11 @@ class UCameraComponent;
 class USkeletalMeshComponent;
 class AS_BaseWeapon;
 
+/** Test delegate signatures */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilled, AActor*, VictimActor, AActor*, KillerActor, AController*, KillerController);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFireStartDelegate);
+DECLARE_DYNAMIC_DELEGATE_RetVal(bool, FAllowFireDelegate);
+
 /**
 * Character armed status:
 * @param Disarmed - player is not carrying any weapon in hands right now
@@ -81,6 +86,16 @@ public:
 
 	UFUNCTION(NetMulticast, Unreliable, BlueprintCallable, Category = "Camera")
 	void NetMulticastUpdateCameraRotation(FRotator NewRotation);
+
+	/** Test delegates */
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Delegates")
+	FOnActorKilled OnActorKilled;
+
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Delegates")
+	FOnFireStartDelegate OnFireStarted;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Delegates")
+	FAllowFireDelegate OnFireAllowed;
 
 protected:
 
