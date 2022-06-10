@@ -49,7 +49,10 @@ public:
 	void Interact_Implementation(AActor* Interactor) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	virtual void Fire();
+	virtual void StartFiring();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	virtual void StopFiring();
 
 	UFUNCTION(Server, Reliable, WithValidation, Category = "Weapon|Server")
 	virtual void ServerFire();

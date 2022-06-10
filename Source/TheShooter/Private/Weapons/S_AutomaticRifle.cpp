@@ -9,8 +9,8 @@ AS_AutomaticRifle::AS_AutomaticRifle()
 	SetReplicates(true);
 }
 
-void AS_AutomaticRifle::Fire()
+void AS_AutomaticRifle::StartFiring()
 {
-	Super::Fire();
+	Super::StartFiring();
 	DEBUGMESSAGE(3.f, FColor::MakeRandomColor(), "Tra-ta-ta!");
 }

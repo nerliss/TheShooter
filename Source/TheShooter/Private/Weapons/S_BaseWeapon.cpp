@@ -42,7 +42,7 @@ void AS_BaseWeapon::Tick(float DeltaTime)
 
 }
 
-void AS_BaseWeapon::Fire()
+void AS_BaseWeapon::StartFiring()
 {
 	// Spawn effects at muzzle location
 	if (ShotSFX)
@@ -56,9 +56,14 @@ void AS_BaseWeapon::Fire()
 	}
 }
 
+void AS_BaseWeapon::StopFiring()
+{
+	return;
+}
+
 void AS_BaseWeapon::ServerFire_Implementation()
 {
-	Fire();
+	StartFiring();
 }
 
 bool AS_BaseWeapon::ServerFire_Validate()

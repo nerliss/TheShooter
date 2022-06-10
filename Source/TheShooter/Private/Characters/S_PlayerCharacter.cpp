@@ -73,7 +73,8 @@ void AS_PlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 		PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AS_BaseCharacter::StartCrouching);
 		PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AS_BaseCharacter::StopCrouching);
 		PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AS_PlayerCharacter::Interact);
-		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AS_PlayerCharacter::Fire);
+		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AS_PlayerCharacter::StartFiring);
+		PlayerInputComponent->BindAction("Fire", IE_Released, this, &AS_PlayerCharacter::StopFiring);
 		PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AS_PlayerCharacter::Reload);
 		PlayerInputComponent->BindAction("DropWeapon", IE_Pressed, this, &AS_PlayerCharacter::DropWeapon);
 
@@ -144,11 +145,19 @@ bool AS_PlayerCharacter::ServerInteract_Validate()
 	return true;
 }
 
-void AS_PlayerCharacter::Fire()
+void AS_PlayerCharacter::StartFiring()
 {
 	if (WeaponReference)
 	{
-		WeaponReference->Fire();
+		WeaponReference->StartFiring();
+	}
+}
+
+void AS_PlayerCharacter::StopFiring()
+{
+	if (WeaponReference)
+	{
+		WeaponReference->StopFiring();
 	}
 }
 

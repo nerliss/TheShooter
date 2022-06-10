@@ -14,9 +14,9 @@ AS_GenericGun::AS_GenericGun()
 	SetReplicates(true);
 }
 
-void AS_GenericGun::Fire()
+void AS_GenericGun::StartFiring()
 {
-	Super::Fire();
+	Super::StartFiring();
 
 	if (GetLocalRole() < ROLE_Authority)
 	{

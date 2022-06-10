@@ -23,6 +23,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "GenericGun")
 	TSubclassOf<AS_BaseProjectile> ProjectileClass;
 
-	virtual void Fire() override;
+	virtual void StartFiring() override;
 
 };

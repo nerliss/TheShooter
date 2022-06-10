@@ -117,7 +117,9 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerInteract();
 
-	void Fire();
+	void StartFiring();
+
+	void StopFiring();
 
 	void Reload();
 

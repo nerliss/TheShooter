@@ -4,19 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "Weapons/S_BaseWeapon.h"
-#include "S_AutomaticRifle.generated.h"
+#include "S_Flamethrower.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class THESHOOTER_API AS_AutomaticRifle : public AS_BaseWeapon
+class THESHOOTER_API AS_Flamethrower : public AS_BaseWeapon
 {
 	GENERATED_BODY()
 	
 public:
 
-	AS_AutomaticRifle();
+	AS_Flamethrower();
 
 	virtual void StartFiring() override;
+
+	virtual void StopFiring() override;
+
 };
