@@ -50,6 +50,9 @@ public:
 
 	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "Interaction")
 	AActor* InteractActor;
+	
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Character|Name")
+	FName Name;
 
 	/** Should be changed every time a player changes active weapon */
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Weapons")

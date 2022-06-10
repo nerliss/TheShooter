@@ -40,7 +40,7 @@ public:
 	USoundBase* ShotSFX;
 
 	/** Reference to a player character. Should be set upon picking up a weapon once this project is configured for multiplayer */
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon|PlayerReference")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon|PlayerReference")
 	AS_PlayerCharacter* PlayerRef;
 
 	virtual void Tick(float DeltaTime) override;
