@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{569C9C47-BFF3-4E9E-88E1-8CBBF256E402}" SchemaVersion="103">
+	<AudioObjects>
+		<WorkUnit Name="Default Work Unit" ID="{569C9C47-BFF3-4E9E-88E1-8CBBF256E402}" PersistMode="Standalone">
+			<ChildrenList>
+				<Sound Name="stinger_a" ID="{9972E75A-D837-4D38-BB7A-41614BDE0585}" ShortID="280901560">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{365CEDAB-F7B8-459E-BCEB-642EC2C8D40C}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{08823483-0570-4A92-8D3B-46D400581733}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="stinger_a" ID="{63EEDB07-5BBA-4736-A62E-2686CAA4DDDB}">
+							<Language>SFX</Language>
+							<AudioFile>stinger_a.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="474933"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ObjectLists/>
+					<ActiveSourceList>
+						<ActiveSource Name="stinger_a" ID="{63EEDB07-5BBA-4736-A62E-2686CAA4DDDB}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>

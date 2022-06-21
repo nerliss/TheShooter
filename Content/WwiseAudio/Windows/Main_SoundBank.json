@@ -1,0 +1,45 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "12",
+  "SoundbankVersion": "140",
+  "RootPaths": {
+   "ProjectRoot": "C:\\dev\\test\\TheShooter\\TheShooter_WwiseProject\\",
+   "SourceFilesRoot": "C:\\dev\\test\\TheShooter\\TheShooter_WwiseProject\\.cache\\Windows\\",
+   "SoundBanksRoot": "C:\\dev\\test\\TheShooter\\Content\\WwiseAudio\\Windows\\",
+   "ExternalSourcesInputFile": "",
+   "ExternalSourcesOutputRoot": "C:\\dev\\test\\TheShooter\\TheShooter_WwiseProject\\GeneratedSoundBanks\\Windows"
+  },
+  "SoundBanks": [
+   {
+    "Id": "2228651116",
+    "GUID": "{73EF602B-5FC0-4026-8FCF-EB79BDACF304}",
+    "Language": "SFX",
+    "Hash": "3725197446",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\Main_SoundBank",
+    "ShortName": "Main_SoundBank",
+    "Path": "Main_SoundBank.bnk",
+    "IncludedEvents": [
+     {
+      "Id": "3038207054",
+      "Name": "Shoot",
+      "ObjectPath": "\\Events\\Default Work Unit\\Shoot",
+      "GUID": "{3B366B3A-F5AC-498D-AEB1-9CAC5E29E7C2}",
+      "DurationType": "OneShot",
+      "DurationMin": "5.273628",
+      "DurationMax": "5.273628",
+      "IncludedMemoryFiles": [
+       {
+        "Id": "474933",
+        "Language": "SFX",
+        "ShortName": "stinger_a.wav",
+        "Path": "SFX\\stinger_a_10C4C929.wem"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}
